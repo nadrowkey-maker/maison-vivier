@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MAISON VIVIER — Studio de design d'intérieur, Paris</title>
+  <meta name="description" content="MAISON VIVIER, studio de design d'intérieur fondé par Alma Vivier. La couleur comme matière première. Hôtels particuliers, restaurants, suites, boutiques. (Site de démonstration — agence fictive.)">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233E2436'/%3E%3Ctext x='32' y='42' font-family='Georgia,serif' font-size='28' fill='%23E3A72F' text-anchor='middle' font-style='italic'%3EMV%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Grain -->
+  <div id="grain" aria-hidden="true"></div>
+
+  <!-- Curseur personnalisé -->
+  <div class="cursor" aria-hidden="true">
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"><span>Voir</span></div>
+  </div>
+
+  <!-- Préchargement -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-brand" id="loader-brand">MAISON&nbsp;VIVIER</div>
+    <div class="loader-sub">Studio de design d'intérieur — Paris</div>
+    <div class="loader-count"><span id="loader-num">00</span></div>
+  </div>
+
+  <!-- En-tête -->
+  <header id="topbar">
+    <a class="brand" href="#hero" data-nav>Maison&nbsp;Vivier</a>
+    <nav class="topnav">
+      <a href="#projets" data-nav>Projets</a>
+      <a href="#studio" data-nav>Studio</a>
+      <a href="#footer" data-nav>Contact</a>
+    </nav>
+  </header>
+
+  <main id="site">
+
+    <!-- Scènes 1→4 · Une seule section sticky : travelling, portes,
+         manifeste sur la promenade, seconde pièce. Une seule paire de portes. -->
+    <section id="hero" class="pin">
+      <div class="pin-child">
+        <canvas id="cv-room"></canvas>
+        <p class="room-word room-word-1"><span class="m-in">Le <em>pigment</em></span></p>
+        <p class="room-word room-word-2"><span class="m-in">La <em>lumière</em></span></p>
+        <p class="room-word room-word-3"><span class="m-in">Le <em>velours</em></span></p>
+        <canvas id="cv-walk"></canvas>
+        <div class="veil" aria-hidden="true"></div>
+        <p class="m-line m-line-1"><span class="m-in">Un intérieur réussi ne se visite pas.<br><em>Il se ressent, comme une température.</em></span></p>
+        <p class="m-line m-line-2"><span class="m-in">La couleur n'est pas une décoration.<br><em>C'est une architecture.</em></span></p>
+        <p class="m-line m-line-3"><span class="m-in">Entrez <em>dans</em> la couleur.</span></p>
+        <canvas id="cv-hero"></canvas>
+        <div class="hero-shade" aria-hidden="true"></div>
+        <p class="hero-frag hero-frag-1">Certaines portes<br><em>ne s'ouvrent pas.</em></p>
+        <p class="hero-frag hero-frag-2">Elles vous<br><em>reconnaissent.</em></p>
+        <p class="hero-hint">( faites défiler )</p>
+        <div class="welcome-shade" aria-hidden="true"></div>
+        <div class="welcome">
+          <p class="welcome-kicker">Bienvenue</p>
+          <h2 class="welcome-title">La Maison vous ouvre<br><em>ses portes.</em></h2>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scène 5 · La fondatrice -->
+    <section id="alma">
+      <p class="sec-label">La fondatrice</p>
+      <div class="alma-grid">
+        <figure class="alma-photo">
+          <img src="assets/img/alma.jpg" alt="Portrait d'Alma Vivier" draggable="false">
+        </figure>
+        <h2 class="alma-name" aria-label="Alma Vivier">Alma<span class="alma-name-2">Vivier</span></h2>
+        <blockquote class="alma-quote">« Je ne choisis pas une couleur.<br>J'écoute celle que la pièce réclame. »</blockquote>
+        <div class="alma-bio">
+          <p>Formée à Milan, passée par les grandes maisons avant d'ouvrir le studio rue de Turenne, Alma Vivier traite le pigment comme un matériau de construction.</p>
+          <p>Depuis 2014, son équipe de neuf personnes compose des intérieurs qui se portent comme des vêtements : au plus près du corps, à la température exacte.</p>
+          <p>Franco-italienne, elle vit entre Paris et les carrières de Vérone, où elle choisit ses marbres à la lumière du matin.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scène 6 · Les projets -->
+    <section id="projets">
+      <p class="sec-label">Projets choisis — 2021 → aujourd'hui</p>
+      <ul class="proj-list">
+        <li><a href="#" class="proj-item" data-p="perche" data-cursor="voir">
+          <span class="idx">01</span><span class="t">Hôtel du Perche</span><span class="loc">Paris, Marais — 2023</span></a></li>
+        <li><a href="#" class="proj-item" data-p="casa" data-cursor="voir">
+          <span class="idx">02</span><span class="t">Casa Rosa</span><span class="loc">Lisbonne — 2022</span></a></li>
+        <li><a href="#" class="proj-item" data-p="suite" data-cursor="voir">
+          <span class="idx">03</span><span class="t">Suite 41</span><span class="loc">Cap d'Antibes — 2024</span></a></li>
+        <li><a href="#" class="proj-item" data-p="appart" data-cursor="voir">
+          <span class="idx">04</span><span class="t">Appartement C.</span><span class="loc">Paris, Haussmann — 2021</span></a></li>
+        <li><a href="#" class="proj-item" data-p="opale" data-cursor="voir">
+          <span class="idx">05</span><span class="t">Maison Opale</span><span class="loc">Genève — en cours</span></a></li>
+      </ul>
+      <div class="preview" aria-hidden="true"><div class="preview-inner"><img src="" alt=""></div></div>
+    </section>
+
+    <!-- Scène 7 · La galerie des matières -->
+    <section id="matieres" class="pin">
+      <div class="pin-child">
+        <p class="mat-head">La matière <em>première</em></p>
+        <div class="mat-track">
+          <figure class="mat-item mat-a"><img src="assets/img/mat-velours-emeraude.jpg" alt="Velours émeraude"><figcaption>Velours émeraude — Venise</figcaption></figure>
+          <figure class="mat-item mat-b"><img src="assets/img/mat-pigments.jpg" alt="Bocaux de pigments"><figcaption>Les pigments de l'atelier</figcaption></figure>
+          <figure class="mat-item mat-c"><img src="assets/img/mat-velours-rouille.jpg" alt="Velours rouille sur mur sauge"><figcaption>Rouille sur sauge — étude n°12</figcaption></figure>
+          <figure class="mat-item mat-a"><img src="assets/img/mat-soie-ivoire.jpg" alt="Soie ivoire"><figcaption>Soies ivoire, pliées</figcaption></figure>
+          <figure class="mat-item mat-d"><img src="assets/img/mat-laiton.jpg" alt="Poignée en laiton"><figcaption>Laiton poli — Hôtel du Perche</figcaption></figure>
+          <figure class="mat-item mat-b"><img src="assets/img/mat-velours-carmin.jpg" alt="Velours carmin"><figcaption>Carmin, teinture n°4</figcaption></figure>
+          <figure class="mat-item mat-c"><img src="assets/img/mat-ceramiques.jpg" alt="Céramiques sous arches"><figcaption>Terres cuites — Alentejo</figcaption></figure>
+          <figure class="mat-item mat-a"><img src="assets/img/mat-drape-rose.jpg" alt="Drapé rose"><figcaption>Rose ancien, drapé</figcaption></figure>
+          <figure class="mat-item mat-d"><img src="assets/img/mat-velours-sauge.jpg" alt="Velours sauge"><figcaption>Velours sauge — Casa Rosa</figcaption></figure>
+          <figure class="mat-item mat-b"><img src="assets/img/mat-nuancier.jpg" alt="Nuancier de l'atelier"><figcaption>Le nuancier, rue de Turenne</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scène 8 · Le studio + presse -->
+    <section id="studio">
+      <p class="sec-label">Le studio</p>
+      <div class="studio-grid">
+        <figure class="studio-photo"><img src="assets/img/studio.jpg" alt="L'atelier de Maison Vivier, mur d'échantillons" draggable="false"></figure>
+        <div class="studio-text">
+          <h3>9, rue de Turenne<br><em>Paris III<sup>e</sup></em></h3>
+          <p>Neuf personnes, deux chats, quatre mille échantillons. Les projets naissent sur une grande table de noyer, entre les bocaux de pigments et la lumière du nord.</p>
+          <p>Le studio accompagne chaque chantier de la première esquisse au dernier coussin.</p>
+        </div>
+      </div>
+      <div class="presse">
+        <span class="presse-label">Vu dans</span>
+        <p class="presse-line">Intérieurs&nbsp;&nbsp;·&nbsp;&nbsp;Palette&nbsp;&nbsp;·&nbsp;&nbsp;La Revue du Décor&nbsp;&nbsp;·&nbsp;&nbsp;Maison Critique&nbsp;&nbsp;·&nbsp;&nbsp;L'Objet</p>
+      </div>
+    </section>
+
+    <!-- Scène 9 · Le rideau (espaceur transparent au-dessus du footer fixé) -->
+    <div id="rideau-spacer" aria-hidden="true"></div>
+  </main>
+
+  <!-- Footer révélé en rideau -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <p class="f-big">Chaque projet commence<br><em>par une conversation.</em></p>
+      <a class="f-mail" href="mailto:bonjour@maisonvivier.fr"><span data-text="bonjour@maisonvivier.fr">bonjour@maisonvivier.fr</span></a>
+      <div class="f-meta">
+        <span>9, rue de Turenne — 75003 Paris</span>
+        <span class="f-sign">Alma Vivier</span>
+        <span class="f-demo">Site de démonstration — agence &amp; projets fictifs · Images&nbsp;: Pexels</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Fiche projet -->
+  <div id="fiche" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="fiche-media"><img src="" alt=""></div>
+    <div class="fiche-body">
+      <p class="fiche-idx"></p>
+      <h2 class="fiche-title"></h2>
+      <p class="fiche-meta"></p>
+      <div class="fiche-desc"></div>
+    </div>
+    <button class="fiche-close" type="button" data-cursor="voir">Fermer</button>
+  </div>
+
+  <script src="lib/gsap.min.js"></script>
+  <script src="lib/ScrollTrigger.min.js"></script>
+  <script src="lib/CustomEase.min.js"></script>
+  <script src="lib/SplitText.min.js"></script>
+  <script src="lib/lenis.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

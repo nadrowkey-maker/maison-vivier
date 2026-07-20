@@ -1,0 +1,8 @@
+# fichiers de travail (vidéos sources, tests, frames intermédiaires)
+work/
+node_modules/
+*.mp4
+
+# système
+.DS_Store
+Thumbs.db
