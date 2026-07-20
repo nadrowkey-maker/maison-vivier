@@ -196,9 +196,23 @@ body.has-cursor .cursor { display: block; }
 .hero-hint {
   position: absolute; z-index: 7;
   left: 50%; bottom: 4.5vh; transform: translateX(-50%);
-  font-size: 11px; letter-spacing: .34em; text-transform: uppercase;
-  color: rgba(246, 239, 230, .85);
-  text-shadow: 0 1px 12px rgba(36, 23, 34, .6);
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  font-size: 13px; letter-spacing: .36em; text-indent: .36em;
+  text-transform: uppercase;
+  color: rgba(246, 239, 230, .96);
+  text-shadow: 0 1px 16px rgba(36, 23, 34, .75);
+}
+.hero-hint::after {
+  content: "";
+  width: 1px; height: 46px;
+  background: linear-gradient(180deg, var(--laiton), rgba(184, 147, 90, .15));
+  transform-origin: top;
+  animation: hintline 2.4s var(--ease) infinite;
+}
+@keyframes hintline {
+  0% { transform: scaleY(0); opacity: 1; }
+  55% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
 }
 
 /* ---------- le message de bienvenue, au cœur du travelling ---------- */
@@ -677,4 +691,5 @@ body.has-cursor .cursor { display: block; }
   #grain { animation: none; }
   .cursor { display: none !important; }
   .welcome-title em { animation: none; }
+  .hero-hint::after { animation: none; transform: scaleY(1); }
 }
