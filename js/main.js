@@ -375,49 +375,49 @@
   let ficheOpen = false;
   let currentItem = null;
 
-  /* aperçu flottant */
+  /* aperçu flottant — état 100 % piloté par ce qui est RÉELLEMENT sous le
+     curseur (elementFromPoint), à chaque frame : aucun état « collé » possible */
   if (!isTouch && !reduced) {
-    const pv = { x: innerWidth / 2, y: innerHeight / 2, tx: 0, ty: 0, on: false };
-    const hidePreview = () => {
-      if (!pv.on && preview.style.opacity === '0') return;
-      pv.on = false;
-      projList.classList.remove('is-hover');
-      gsap.to(preview, { opacity: 0, duration: 0.45, ease: 'signature' });
-    };
+    const pv = { x: innerWidth / 2, y: innerHeight / 2, tx: -1, ty: -1, on: false };
+    let curKey = null;
     window.addEventListener('mousemove', (e) => { pv.tx = e.clientX; pv.ty = e.clientY; });
+    gsap.set(preview, { opacity: 0 });
+
     gsap.ticker.add(() => {
       pv.x += (pv.tx - pv.x) * 0.1;
       pv.y += (pv.ty - pv.y) * 0.1;
+
+      // quel projet est sous le curseur, ici et maintenant ?
+      let key = null;
+      if (!ficheOpen && pv.tx >= 0) {
+        const el = document.elementFromPoint(pv.tx, pv.ty);
+        const item = el && el.closest ? el.closest('.proj-item') : null;
+        if (item && PROJECTS[item.dataset.p]) key = item.dataset.p;
+      }
+
+      if (key !== curKey) {
+        curKey = key;
+        gsap.killTweensOf(preview);
+        if (key) {
+          previewImg.src = PROJECTS[key].img;
+          projList.classList.add('is-hover');
+          pv.on = true;
+          gsap.fromTo(preview, { scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.65, ease: 'signature' });
+        } else {
+          projList.classList.remove('is-hover');
+          pv.on = false;
+          gsap.to(preview, { opacity: 0, duration: 0.4, ease: 'signature' });
+        }
+      }
+
       if (pv.on || preview.style.opacity !== '0') {
         const w = preview.offsetWidth, h = preview.offsetHeight;
         preview.style.transform = `translate(${pv.x - w * 0.5 + 60}px, ${pv.y - h * 0.5}px)`;
-        // parallaxe interne à contre-sens
         const dx = (pv.tx - pv.x) * 0.85;
         const dy = (pv.ty - pv.y) * 0.7;
         previewImg.style.transform = `translate(${-dx}px, ${-dy}px)`;
       }
-      // filet impitoyable : si le point sous le curseur n'est plus un projet, on masque
-      if (pv.on) {
-        const el = document.elementFromPoint(pv.tx, pv.ty);
-        if (!el || !el.closest('.proj-item')) hidePreview();
-      }
     });
-    window.addEventListener('blur', hidePreview);
-    document.documentElement.addEventListener('mouseleave', hidePreview);
-    $$('.proj-item').forEach((item) => {
-      item.addEventListener('mouseenter', () => {
-        const d = PROJECTS[item.dataset.p];
-        if (!d) return;
-        previewImg.src = d.img;
-        projList.classList.add('is-hover');
-        pv.on = true;
-        gsap.to(preview, { opacity: 1, scale: 1, duration: 0.7, ease: 'signature' });
-        gsap.set(preview, { scale: 0.9 });
-      });
-      item.addEventListener('mouseleave', hidePreview);
-    });
-    projList.addEventListener('mouseleave', hidePreview);
-    gsap.set(preview, { opacity: 0 });
   }
 
   /* fiche projet */

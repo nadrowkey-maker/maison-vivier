@@ -165,16 +165,21 @@
       </div>
     </section>
 
-    <!-- Scène 9 · Le rideau (espaceur transparent au-dessus du footer fixé) -->
-    <div id="rideau-spacer" aria-hidden="true"></div>
   </main>
+
+  <!-- Scène 9 · Le rideau (espaceur transparent, hors de #site pour laisser
+       les clics atteindre le footer révélé dessous) -->
+  <div id="rideau-spacer" aria-hidden="true"></div>
 
   <!-- Footer révélé en rideau -->
   <footer id="footer">
     <div class="footer-trail" aria-hidden="true"><canvas></canvas></div>
     <div class="footer-inner">
       <p class="f-big">Chaque projet commence<br><em>par une conversation.</em></p>
-      <a class="f-mail" href="mailto:bonjour@maisonvivier.fr"><span data-text="bonjour@maisonvivier.fr">bonjour@maisonvivier.fr</span></a>
+      <div class="f-contact">
+        <a class="f-mail" href="mailto:bonjour@maisonvivier.fr"><span data-text="bonjour@maisonvivier.fr">bonjour@maisonvivier.fr</span></a>
+        <a class="f-tel" href="tel:+33142710000">+33&nbsp;1&nbsp;42&nbsp;71&nbsp;00&nbsp;00</a>
+      </div>
       <div class="f-meta">
         <span>9, rue de Turenne — 75003 Paris</span>
         <span class="f-sign">Alma Vivier</span>

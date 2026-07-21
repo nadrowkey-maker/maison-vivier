@@ -659,13 +659,17 @@ body.has-cursor .cursor { display: block; }
   line-height: 1.02;
 }
 .f-big em { font-style: italic; font-weight: 300; color: var(--safran); }
-.f-mail {
+.f-contact {
   margin-top: 7vh;
+  display: flex; flex-direction: column; gap: 2.4vh;
+}
+.f-mail {
   font-family: var(--serif); font-style: italic; font-weight: 300;
   font-size: clamp(22px, 3vw, 52px);
   color: var(--creme);
   text-decoration: none;
   position: relative;
+  width: fit-content;
 }
 .f-mail span {
   background: linear-gradient(var(--safran), var(--safran)) no-repeat 0 100% / 0% 2px;
@@ -673,6 +677,24 @@ body.has-cursor .cursor { display: block; }
   padding-bottom: 8px;
 }
 .f-mail:hover span { background-size: 100% 2px; color: var(--safran); }
+.f-tel {
+  font-family: var(--serif); font-weight: 300;
+  font-size: clamp(18px, 1.9vw, 30px);
+  letter-spacing: .04em;
+  color: var(--laiton);
+  text-decoration: none;
+  width: fit-content;
+  position: relative;
+  transition: color .7s var(--ease);
+}
+.f-tel::after {
+  content: ""; position: absolute; left: 0; bottom: -6px;
+  width: 100%; height: 1px; background: var(--safran);
+  transform: scaleX(0); transform-origin: right;
+  transition: transform .7s var(--ease);
+}
+.f-tel:hover { color: var(--safran); }
+.f-tel:hover::after { transform: scaleX(1); transform-origin: left; }
 .f-meta {
   margin-top: auto;
   margin-bottom: 5vh;
