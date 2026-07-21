@@ -15,7 +15,7 @@ comme on traverse les pièces d'une maison, chaque scène ayant sa couleur domin
 2. **Hero** — travelling dans un couloir d'hôtel particulier, **piloté par le scroll avec inertie** (séquence de 150 images JPEG dessinées dans un canvas — jamais d'arrêt sec). Fragments de phrases calés sur la progression.
 3. **La bienvenue** — la transition signature : au cœur du travelling qui continue de tourner, la lumière baisse doucement et un grand titre s'allume au centre — « Bienvenue · **La Maison vous ouvre *ses portes.*** » (l'italique dorée est balayée d'une brillance lente) ; puis le couloir se dissout en fondu enchaîné vers la promenade suivante.
 4. **Le manifeste** — trois phrases une à une, posées sur une **promenade scrubée à travers trois pièces réellement distinctes** (montage de trois vidéos : salon céladon, bibliothèque ancienne turquoise, séjour au couchant), chaque phrase à un endroit différent de l'écran ; la dernière grossit jusqu'à ce qu'on passe entre ses lettres et révèle la pièce suivante (même section sticky, pour une couture invisible).
-5. **La pièce** — second travelling scrubé (salon bleu nuit), trois mots-matières : le pigment, la lumière, le velours.
+5. **Les matières** — trois mots plein écran (**le pigment**, **la lumière**, **le velours**), chacun sur sa propre vidéo en boucle (encre colorée, voilage ensoleillé, soie émeraude). Le texte est en `mix-blend-mode: difference` : sa couleur est l'**inverse exact de la vidéo, en temps réel** — comme les vidéos tournent, la couleur des mots vibre en continu.
 6. **La fondatrice** — portrait éditorial d'Alma sur fond safran, parallaxe lente, nom en display géant.
 7. **Les projets** — cinq grands titres ; au survol, image flottante qui suit le curseur (retard élastique, parallaxe interne à contre-sens) ; au clic, fiche plein écran (fermeture : bouton ou Échap, scroll bloqué).
 8. **La galerie des matières** — section épinglée à défilement horizontal, dix matières légendées.
@@ -49,7 +49,8 @@ Seules les polices Google Fonts nécessitent une connexion ; tout le reste est l
 
 ## Crédits médias (Pexels)
 
-- Séquence hero : vidéo Pexels n° 12350193 · Manifeste (trois pièces) : vidéos n° 6356433, 13813030, 7578546 · Séquence « la pièce » : n° 17246202
+- Séquence hero : vidéo Pexels n° 12350193 · Manifeste (trois pièces) : vidéos n° 6356433, 13813030, 7578546
+- Matières (fonds vidéo en boucle) : pigment n° 15432087, lumière n° 35161057, velours n° 7677154
 - Portrait d'Alma : photo n° 34751826 · Studio : n° 37178238
 - Projets : n° 30666576 (Perche), 15126371 (Casa Rosa), 19799232 (Suite 41), 18631360 (Appartement C.), 11048312 (Maison Opale)
 - Matières : n° 35974685, 32444178, 13169786, 14935628, 17892432, 36305726, 27584192, 19856114, 7232401, 6580566
@@ -63,7 +64,7 @@ js/main.js
 lib/                gsap, ScrollTrigger, CustomEase, SplitText, lenis (locaux)
 assets/seq-hero/    150 frames du travelling d'ouverture
 assets/seq-walk/    150 frames de la promenade du manifeste (trois pièces)
-assets/seq-room/    150 frames du second travelling
+assets/video/       3 boucles de matières (pigment, lumière, velours)
 assets/img/         photos (projets, portrait, matières)
 captures/           screenshots des scènes clés
 ```

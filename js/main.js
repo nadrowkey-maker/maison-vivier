@@ -122,11 +122,21 @@
 
   const seqHero = new Seq('assets/seq-hero', 150, $('#cv-hero'));
   const seqWalk = new Seq('assets/seq-walk', 150, $('#cv-walk'));
-  const seqRoom = new Seq('assets/seq-room', 150, $('#cv-room'));
   seqHero.resize();
   seqWalk.resize();
-  seqRoom.resize();
-  gsap.ticker.add(() => { seqHero.tick(); seqWalk.tick(); seqRoom.tick(); });
+  gsap.ticker.add(() => { seqHero.tick(); seqWalk.tick(); });
+
+  /* ---------- les vidéos de matières (loop, jouées seulement dans leur fenêtre) ---------- */
+  const matterVids = $$('.matter-bg');
+  let matterPlaying = false;
+  function setMatterPlaying(on) {
+    if (on === matterPlaying) return;
+    matterPlaying = on;
+    matterVids.forEach((v) => {
+      if (on) { const p = v.play(); if (p) p.catch(() => {}); }
+      else v.pause();
+    });
+  }
 
   /* ---------- préloader ---------- */
   const loader = $('#loader');
@@ -167,7 +177,7 @@
       .add(() => {
         lenis.start();
         ScrollTrigger.refresh();
-        seqWalk.load(() => seqRoom.load()); // séquences suivantes en tâche de fond
+        seqWalk.load(); // séquence de la promenade en tâche de fond
       }, '-=0.9');
   }
 
@@ -178,7 +188,7 @@
     heroEnd: 0.40,     // le travelling tourne jusqu'au fondu
     walkStart: 0.40,   // la promenade s'éveille sous le fondu enchaîné
     walkEnd: 0.68,     // fin du parcours des trois pièces
-    roomStart: 0.72,   // révélation de la seconde pièce
+    matterStart: 0.70, // début des matières (pigment / lumière / velours)
   };
 
   ScrollTrigger.create({
@@ -190,7 +200,8 @@
       const p = self.progress;
       seqHero.target = clamp01(p / T.heroEnd);
       seqWalk.target = clamp01((p - T.walkStart) / (T.walkEnd - T.walkStart));
-      seqRoom.target = p < T.roomStart ? 0 : clamp01((p - T.roomStart) / (1 - T.roomStart));
+      // les vidéos de matières ne tournent que dans leur fenêtre (perf)
+      setMatterPlaying(p > T.matterStart - 0.03 && p < 0.999);
     },
   });
 
@@ -225,15 +236,20 @@
     .fromTo('.m-line-3', { opacity: 0 }, { opacity: 1, duration: 0.016 }, 0.603)
     .to('.m-line-3', { scale: 16, duration: 0.085, ease: 'power2.in' }, 0.66)
     .to('#cv-walk', { opacity: 0, duration: 0.025 }, 0.705)
-    .to('.veil', { opacity: 0, duration: 0.025 }, 0.705)
+    .to('.veil', { opacity: 0, duration: 0.025 }, 0.705)   // révèle la vidéo « pigment » dessous
     .to('.m-line-3', { opacity: 0, duration: 0.012 }, 0.74)
-    // les mots-matières de la seconde pièce
-    .fromTo('.room-word-1', { opacity: 0, yPercent: 6 }, { opacity: 1, yPercent: 0, duration: 0.015 }, 0.775)
-    .to('.room-word-1', { opacity: 0, yPercent: -6, duration: 0.015 }, 0.825)
-    .fromTo('.room-word-2', { opacity: 0, yPercent: 6 }, { opacity: 1, yPercent: 0, duration: 0.015 }, 0.855)
-    .to('.room-word-2', { opacity: 0, yPercent: -6, duration: 0.015 }, 0.90)
-    .fromTo('.room-word-3', { opacity: 0, yPercent: 6 }, { opacity: 1, yPercent: 0, duration: 0.015 }, 0.93)
-    .to('.room-word-3', { opacity: 0, duration: 0.012 }, 0.985)
+    // les matières : chaque mot prend l'inverse exact de SA vidéo (mix-blend difference)
+    // le pigment
+    .fromTo('.matter-word-1', { opacity: 0, yPercent: 8 }, { opacity: 1, yPercent: 0, duration: 0.016 }, 0.745)
+    .to('.matter-word-1', { opacity: 0, yPercent: -8, duration: 0.016 }, 0.80)
+    // la lumière (la vidéo se substitue en fondu sous le mot suivant)
+    .to('.matter-2', { opacity: 1, duration: 0.02 }, 0.795)
+    .fromTo('.matter-word-2', { opacity: 0, yPercent: 8 }, { opacity: 1, yPercent: 0, duration: 0.016 }, 0.82)
+    .to('.matter-word-2', { opacity: 0, yPercent: -8, duration: 0.016 }, 0.875)
+    // le velours
+    .to('.matter-3', { opacity: 1, duration: 0.02 }, 0.87)
+    .fromTo('.matter-word-3', { opacity: 0, yPercent: 8 }, { opacity: 1, yPercent: 0, duration: 0.016 }, 0.895)
+    .to('.matter-word-3', { opacity: 0, duration: 0.014 }, 0.965)
     .to({}, { duration: 0.003 }, 0.997); // tenue jusqu'à la fin exacte
 
   /* ---------- scène 5 · Alma (parallaxe + rideau) ---------- */
@@ -485,7 +501,6 @@
     rsTimer = setTimeout(() => {
       seqHero.resize();
       seqWalk.resize();
-      seqRoom.resize();
       sizeMat();
       ScrollTrigger.refresh();
     }, 200);

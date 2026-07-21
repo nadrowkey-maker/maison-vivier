@@ -45,10 +45,23 @@
          manifeste sur la promenade, seconde pièce. Une seule paire de portes. -->
     <section id="hero" class="pin">
       <div class="pin-child">
-        <canvas id="cv-room"></canvas>
-        <p class="room-word room-word-1"><span class="m-in">Le <em>pigment</em></span></p>
-        <p class="room-word room-word-2"><span class="m-in">La <em>lumière</em></span></p>
-        <p class="room-word room-word-3"><span class="m-in">Le <em>velours</em></span></p>
+        <div id="matter-stage" aria-hidden="true">
+          <div class="matter matter-1">
+            <video class="matter-bg" muted loop playsinline preload="auto">
+              <source src="assets/video/mat-pigment.mp4" type="video/mp4"></video>
+            <p class="matter-word matter-word-1"><span class="m-in">Le <em>pigment</em></span></p>
+          </div>
+          <div class="matter matter-2">
+            <video class="matter-bg" muted loop playsinline preload="auto">
+              <source src="assets/video/mat-lumiere.mp4" type="video/mp4"></video>
+            <p class="matter-word matter-word-2"><span class="m-in">La <em>lumière</em></span></p>
+          </div>
+          <div class="matter matter-3">
+            <video class="matter-bg" muted loop playsinline preload="auto">
+              <source src="assets/video/mat-velours.mp4" type="video/mp4"></video>
+            <p class="matter-word matter-word-3"><span class="m-in">Le <em>velours</em></span></p>
+          </div>
+        </div>
         <canvas id="cv-walk"></canvas>
         <div class="veil" aria-hidden="true"></div>
         <p class="m-line m-line-1"><span class="m-in">Un intérieur réussi ne se visite pas.<br><em>Il se ressent, comme une température.</em></span></p>

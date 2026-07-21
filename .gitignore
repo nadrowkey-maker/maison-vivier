@@ -1,7 +1,8 @@
 # fichiers de travail (vidéos sources, tests, frames intermédiaires)
 work/
 node_modules/
-*.mp4
+# les mp4 sources restent dans work/ (ignoré) ; les boucles finales
+# vivent dans assets/video/ et DOIVENT être versionnées
 
 # système
 .DS_Store
