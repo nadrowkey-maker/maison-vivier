@@ -22,6 +22,16 @@
     <div class="cursor-ring"><span>Voir</span></div>
   </div>
 
+  <!-- Filtre « gooey » (seuil d'alpha) pour la transition liquide du titre -->
+  <svg class="svg-defs" aria-hidden="true" focusable="false" width="0" height="0">
+    <defs>
+      <filter id="gooey-threshold">
+        <feColorMatrix in="SourceGraphic" type="matrix"
+          values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/>
+      </filter>
+    </defs>
+  </svg>
+
   <!-- Préchargement -->
   <div id="loader" aria-hidden="true">
     <div class="loader-brand" id="loader-brand">MAISON&nbsp;VIVIER</div>
@@ -63,8 +73,15 @@
         <div class="veil" aria-hidden="true"></div>
         <p class="m-line m-line-1"><span class="m-in">Un intérieur réussi ne se visite pas.<br><em>Il se ressent, comme une température.</em></span></p>
         <p class="m-line m-line-2"><span class="m-in">La couleur n'est pas une décoration.<br><em>C'est une architecture.</em></span></p>
-        <p class="m-line m-line-3"><span class="m-in">Entrez <em>dans</em> la couleur.</span></p>
+        <div class="m-line m-line-3">
+          <div class="gooey">
+            <span class="gooey-word gooey-1">Entrez</span>
+            <span class="gooey-word gooey-2">dans la couleur</span>
+          </div>
+        </div>
         <canvas id="cv-hero"></canvas>
+        <video id="hero-idle" muted loop playsinline autoplay preload="auto" aria-hidden="true">
+          <source src="assets/video/hero-idle.mp4" type="video/mp4"></video>
         <div class="hero-shade" aria-hidden="true"></div>
         <p class="hero-frag hero-frag-1">Certaines portes<br><em>ne s'ouvrent pas.</em></p>
         <p class="hero-frag hero-frag-2">Elles vous<br><em>reconnaissent.</em></p>
@@ -154,13 +171,14 @@
 
   <!-- Footer révélé en rideau -->
   <footer id="footer">
+    <div class="footer-trail" aria-hidden="true"><canvas></canvas></div>
     <div class="footer-inner">
       <p class="f-big">Chaque projet commence<br><em>par une conversation.</em></p>
       <a class="f-mail" href="mailto:bonjour@maisonvivier.fr"><span data-text="bonjour@maisonvivier.fr">bonjour@maisonvivier.fr</span></a>
       <div class="f-meta">
         <span>9, rue de Turenne — 75003 Paris</span>
         <span class="f-sign">Alma Vivier</span>
-        <span class="f-demo">Site de démonstration — agence &amp; projets fictifs · Images&nbsp;: Pexels</span>
+        <span class="f-demo">Site de démonstration — agence &amp; projets fictifs · Images&nbsp;: Pexels &amp; Pixabay</span>
       </div>
     </div>
   </footer>
@@ -182,6 +200,7 @@
   <script src="lib/CustomEase.min.js"></script>
   <script src="lib/SplitText.min.js"></script>
   <script src="lib/lenis.min.js"></script>
+  <script src="js/halftone-trail.js"></script>
   <script src="js/main.js"></script>
 </body>
 </html>

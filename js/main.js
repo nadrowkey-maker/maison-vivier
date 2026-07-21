@@ -185,6 +185,25 @@
     walkEnd: 0.68,     // fin du parcours des trois pièces
   };
 
+  // boucle « vivante » au repos
+  const heroIdle = $('#hero-idle');
+  // morph liquide « Entrez » → « dans la couleur »
+  const gooey1 = $('.gooey-1');
+  const gooey2 = $('.gooey-2');
+  function setGooey(f) {
+    f = clamp01(f);
+    const b2 = Math.min(8 / Math.max(f, 1e-3) - 8, 100);
+    gooey2.style.filter = `blur(${b2}px)`;
+    gooey2.style.opacity = Math.pow(f, 0.4);
+    const inv = 1 - f;
+    const b1 = Math.min(8 / Math.max(inv, 1e-3) - 8, 100);
+    gooey1.style.filter = `blur(${b1}px)`;
+    gooey1.style.opacity = Math.pow(inv, 0.4);
+  }
+  setGooey(0);
+
+  const GOOEY_A = 0.62, GOOEY_B = 0.665;
+
   ScrollTrigger.create({
     trigger: '#hero',
     start: 'top top',
@@ -199,17 +218,24 @@
       seqPigment.target = clamp01((p - 0.70) / (0.805 - 0.70));
       seqLumiere.target = clamp01((p - 0.795) / (0.88 - 0.795));
       seqVelours.target = clamp01((p - 0.87) / (0.97 - 0.87));
+      // le morph du titre suit le scroll
+      setGooey((p - GOOEY_A) / (GOOEY_B - GOOEY_A));
+      // la boucle idle ne tourne qu'en haut (perf), puis se fige/masque
+      if (heroIdle) {
+        const idle = p < 0.05;
+        if (idle && heroIdle.paused) { const pr = heroIdle.play(); if (pr) pr.catch(() => {}); }
+        else if (!idle && !heroIdle.paused) heroIdle.pause();
+      }
     },
   });
-
-  gsap.set('.m-line-3', { transformOrigin: '50% 52%' });
 
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom bottom', scrub: 0.6 },
   });
-  tl.to('.hero-hint', { opacity: 0, duration: 0.012 }, 0.008)
-    .fromTo('.hero-frag-1', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.02 }, 0.024)
+  tl.fromTo('#hero-idle', { opacity: 1 }, { opacity: 0, duration: 0.02 }, 0)   // fondu quasi invisible vers le hall
+    .to('.hero-hint', { opacity: 0, duration: 0.012 }, 0.012)
+    .fromTo('.hero-frag-1', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.02 }, 0.028)
     .to('.hero-frag-1', { opacity: 0, y: -50, duration: 0.02 }, 0.084)
     .fromTo('.hero-frag-2', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.02 }, 0.128)
     .to('.hero-frag-2', { opacity: 0, y: -50, duration: 0.02 }, 0.192)
@@ -229,12 +255,12 @@
     // pièce 2 — la bibliothèque (phrase en bas à droite)
     .fromTo('.m-line-2', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.016 }, 0.515)
     .to('.m-line-2', { opacity: 0, y: -40, duration: 0.016 }, 0.573)
-    // pièce 3 — le séjour au couchant (phrase au centre), puis on passe entre les lettres
-    .fromTo('.m-line-3', { opacity: 0 }, { opacity: 1, duration: 0.016 }, 0.603)
-    .to('.m-line-3', { scale: 16, duration: 0.085, ease: 'power2.in' }, 0.66)
-    .to('#cv-walk', { opacity: 0, duration: 0.025 }, 0.705)
-    .to('.veil', { opacity: 0, duration: 0.025 }, 0.705)   // révèle la vidéo « pigment » dessous
-    .to('.m-line-3', { opacity: 0, duration: 0.012 }, 0.74)
+    // pièce 3 — le séjour au couchant : « Entrez » se liquéfie en « dans la couleur »
+    // (le morph gooey est piloté par setGooey dans le ScrollTrigger ci-dessus)
+    .fromTo('.m-line-3', { opacity: 0 }, { opacity: 1, duration: 0.016 }, 0.585)
+    .to('#cv-walk', { opacity: 0, duration: 0.03 }, 0.70)
+    .to('.veil', { opacity: 0, duration: 0.03 }, 0.70)     // révèle la vidéo « pigment » dessous
+    .to('.m-line-3', { opacity: 0, duration: 0.018 }, 0.72)
     // les matières : chaque mot prend l'inverse exact de SA vidéo (mix-blend difference)
     // le pigment
     .fromTo('.matter-word-1', { opacity: 0, yPercent: 8 }, { opacity: 1, yPercent: 0, duration: 0.016 }, 0.745)
@@ -490,6 +516,15 @@
       trigger: '#rideau-spacer', start: 'top bottom', end: 'bottom bottom', scrub: true,
     },
   });
+
+  /* ---------- traînée de souris « halftone » sur le footer ---------- */
+  if (!reduced && !isTouch && window.HalftoneTrail) {
+    const ft = $('.footer-trail');
+    if (ft) window.HalftoneTrail.init(ft, {
+      color: '#EBD9B4', cellSize: 10, opacity: 0.9, hoverOpacity: 0.28,
+      brushSize: 0.05, hoverBrushSize: 0.014, hoverSelector: '#footer a',
+    });
+  }
 
   /* ---------- redimensionnement ---------- */
   let rsTimer = null;

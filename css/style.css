@@ -173,6 +173,17 @@ body.has-cursor .cursor { display: block; }
   z-index: 6;
 }
 
+/* boucle « vivante » au repos : voilage ensoleillé, se fond dans le hall au 1er scroll */
+#hero-idle {
+  position: absolute; inset: 0; z-index: 6;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
+
 /* ---------- les matières : 3 vidéos loop + mots en inversion temps réel ---------- */
 #matter-stage { position: absolute; inset: 0; z-index: 1; }
 .matter {
@@ -244,7 +255,7 @@ body.has-cursor .cursor { display: block; }
 /* ---------- le message de bienvenue, au cœur du travelling ---------- */
 .welcome-shade {
   position: absolute; inset: 0; z-index: 7;
-  background: radial-gradient(120% 105% at 50% 46%, rgba(20, 10, 18, .28) 0%, rgba(16, 7, 14, .74) 100%);
+  background: radial-gradient(125% 110% at 50% 48%, rgba(20, 10, 18, .10) 0%, rgba(16, 7, 14, .52) 100%);
   opacity: 0;
   pointer-events: none;
 }
@@ -256,12 +267,14 @@ body.has-cursor .cursor { display: block; }
   padding: 0 6vw;
   pointer-events: none;
 }
+/* bienvenue : couleur inversée en direct sur le travelling (mix-blend difference) */
 .welcome-kicker {
   font-family: var(--sans); font-weight: 500;
   font-size: clamp(10px, .9vw, 14px);
   letter-spacing: .58em; text-indent: .58em;
   text-transform: uppercase;
-  color: rgba(232, 204, 150, .9);
+  color: #fff;
+  mix-blend-mode: difference;
   margin-bottom: 4vh;
   opacity: 0;
 }
@@ -269,20 +282,11 @@ body.has-cursor .cursor { display: block; }
   font-family: var(--serif); font-weight: 340;
   font-size: clamp(40px, 7vw, 122px);
   line-height: 1.06;
-  color: var(--creme);
-  text-shadow: 0 2px 50px rgba(14, 7, 14, .65);
+  color: #fff;
+  mix-blend-mode: difference;
   opacity: 0;
 }
-.welcome-title em {
-  font-style: italic; font-weight: 300;
-  background: linear-gradient(105deg, #B08A54 30%, #F5E0AC 48%, #CFA96C 58%, #B08A54 74%);
-  background-size: 230% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shimmer 5s var(--ease) infinite;
-  filter: drop-shadow(0 2px 30px rgba(14, 7, 14, .5));
-}
+.welcome-title em { font-style: italic; font-weight: 300; }
 @keyframes shimmer {
   0% { background-position: 115% 0; }
   55% { background-position: -15% 0; }
@@ -314,7 +318,13 @@ body.has-cursor .cursor { display: block; }
 }
 .m-line .m-in { display: block; }
 .m-line { text-shadow: 0 2px 44px rgba(16, 8, 16, .65), 0 1px 10px rgba(16, 8, 16, .4); }
-.m-line em { font-style: italic; font-weight: 300; color: var(--safran); }
+/* l'accent (ex-jaune) prend la couleur inverse du fond, en direct */
+.m-line em {
+  font-style: italic; font-weight: 300;
+  color: #fff;
+  mix-blend-mode: difference;
+  text-shadow: none;
+}
 
 /* chaque phrase habite un coin différent de la pièce */
 .m-line-1 {
@@ -327,11 +337,26 @@ body.has-cursor .cursor { display: block; }
   text-align: right;
   padding: 0 8vw 15vh;
 }
-.m-line-3 {
-  font-size: clamp(38px, 7vw, 120px);
-  font-weight: 400;
+/* « Entrez » → « dans la couleur » : morph liquide (gooey) + couleur inversée */
+.m-line-3 { text-shadow: none; }
+.gooey {
+  position: relative;
+  width: 100%; height: 1.2em;
+  filter: url(#gooey-threshold);
+  mix-blend-mode: difference;
 }
-.m-line-3 em { color: var(--safran); }
+.gooey-word {
+  position: absolute; left: 0; right: 0; top: 50%;
+  transform: translateY(-50%);
+  display: block; text-align: center;
+  white-space: nowrap;
+  font-family: var(--serif); font-weight: 380; font-style: italic;
+  font-size: clamp(40px, 7.5vw, 128px);
+  letter-spacing: .01em;
+  color: #fff;
+  will-change: filter, opacity;
+}
+.gooey-2 { opacity: 0; }
 
 /* ---------- scène 5 · Alma ---------- */
 #alma {
@@ -613,7 +638,15 @@ body.has-cursor .cursor { display: block; }
   background: var(--emeraude-p);
   color: var(--creme);
 }
+.footer-trail {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.footer-trail canvas { display: block; width: 100%; height: 100%; }
+
 .footer-inner {
+  position: relative; z-index: 1;
   height: 100%;
   display: flex; flex-direction: column;
   justify-content: center; align-items: flex-start;
