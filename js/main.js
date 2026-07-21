@@ -122,21 +122,15 @@
 
   const seqHero = new Seq('assets/seq-hero', 150, $('#cv-hero'));
   const seqWalk = new Seq('assets/seq-walk', 150, $('#cv-walk'));
-  seqHero.resize();
-  seqWalk.resize();
-  gsap.ticker.add(() => { seqHero.tick(); seqWalk.tick(); });
-
-  /* ---------- les vidéos de matières (loop, jouées seulement dans leur fenêtre) ---------- */
-  const matterVids = $$('.matter-bg');
-  let matterPlaying = false;
-  function setMatterPlaying(on) {
-    if (on === matterPlaying) return;
-    matterPlaying = on;
-    matterVids.forEach((v) => {
-      if (on) { const p = v.play(); if (p) p.catch(() => {}); }
-      else v.pause();
-    });
-  }
+  const seqPigment = new Seq('assets/seq-pigment', 110, $('#cv-pigment'));
+  const seqLumiere = new Seq('assets/seq-lumiere', 90, $('#cv-lumiere'));
+  const seqVelours = new Seq('assets/seq-velours', 90, $('#cv-velours'));
+  const matterSeqs = [seqPigment, seqLumiere, seqVelours];
+  [seqHero, seqWalk, ...matterSeqs].forEach((s) => s.resize());
+  gsap.ticker.add(() => {
+    seqHero.tick(); seqWalk.tick();
+    seqPigment.tick(); seqLumiere.tick(); seqVelours.tick();
+  });
 
   /* ---------- préloader ---------- */
   const loader = $('#loader');
@@ -177,7 +171,8 @@
       .add(() => {
         lenis.start();
         ScrollTrigger.refresh();
-        seqWalk.load(); // séquence de la promenade en tâche de fond
+        // séquences suivantes en tâche de fond, l'une après l'autre
+        seqWalk.load(() => seqPigment.load(() => seqLumiere.load(() => seqVelours.load())));
       }, '-=0.9');
   }
 
@@ -188,7 +183,6 @@
     heroEnd: 0.40,     // le travelling tourne jusqu'au fondu
     walkStart: 0.40,   // la promenade s'éveille sous le fondu enchaîné
     walkEnd: 0.68,     // fin du parcours des trois pièces
-    matterStart: 0.70, // début des matières (pigment / lumière / velours)
   };
 
   ScrollTrigger.create({
@@ -200,8 +194,11 @@
       const p = self.progress;
       seqHero.target = clamp01(p / T.heroEnd);
       seqWalk.target = clamp01((p - T.walkStart) / (T.walkEnd - T.walkStart));
-      // les vidéos de matières ne tournent que dans leur fenêtre (perf)
-      setMatterPlaying(p > T.matterStart - 0.03 && p < 0.999);
+      // chaque matière est scrubée sur sa propre fenêtre (le mot en inversion
+      // suit la vidéo image par image au scroll)
+      seqPigment.target = clamp01((p - 0.70) / (0.805 - 0.70));
+      seqLumiere.target = clamp01((p - 0.795) / (0.88 - 0.795));
+      seqVelours.target = clamp01((p - 0.87) / (0.97 - 0.87));
     },
   });
 
@@ -501,6 +498,7 @@
     rsTimer = setTimeout(() => {
       seqHero.resize();
       seqWalk.resize();
+      matterSeqs.forEach((s) => s.resize());
       sizeMat();
       ScrollTrigger.refresh();
     }, 200);
