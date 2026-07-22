@@ -212,7 +212,7 @@ body.has-cursor .cursor { display: block; }
   color: var(--creme);
   text-shadow: 0 2px 40px rgba(0, 0, 0, .6);
 }
-.intro-cta-title em { font-style: italic; font-weight: 300; color: var(--safran); }
+.intro-cta-title em { font-style: italic; font-weight: 300; color: var(--creme); }
 .intro-mouse {
   position: relative;
   width: 26px; height: 42px;
