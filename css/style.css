@@ -189,7 +189,7 @@ body.has-cursor .cursor { display: block; }
   position: absolute; inset: 0; z-index: 1;
   width: 100%; height: 100%;
   object-fit: cover;
-  transform: scale(1.4);
+  transform: scale(1.17);
   transform-origin: 50% 40%;
   will-change: transform;
   pointer-events: none;
