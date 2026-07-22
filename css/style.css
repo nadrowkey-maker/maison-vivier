@@ -163,7 +163,7 @@ body.has-cursor .cursor { display: block; }
 }
 
 /* ---------- scènes 1→4 · la grande section (hero + portes + manifeste + pièce) ---------- */
-#hero { height: 1650vh; background: var(--prune-p); }
+#hero { height: 1250vh; background: var(--prune-p); }
 #hero .pin-child { background: var(--prune-p); }
 
 #cv-hero {
@@ -232,33 +232,6 @@ body.has-cursor .cursor { display: block; }
   60% { opacity: 1; transform: translate(-50%, 14px); }
   100% { opacity: 0; transform: translate(-50%, 14px); }
 }
-
-/* ---------- les matières : 3 vidéos loop + mots en inversion temps réel ---------- */
-#matter-stage { position: absolute; inset: 0; z-index: 1; }
-.matter {
-  position: absolute; inset: 0;
-  isolation: isolate;            /* la difference ne mélange QUE le mot et sa vidéo */
-  overflow: hidden;
-  background: #0e0712;           /* filet : chaque panneau reste opaque même si sa séquence n'est pas encore chargée */
-}
-.matter-2, .matter-3 { opacity: 0; }
-.matter-bg {
-  position: absolute; inset: 0;
-  width: 100%; height: 100%;
-  display: block;
-}
-.matter-word {
-  position: absolute; inset: 0; z-index: 2;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--serif); font-weight: 420;
-  font-size: clamp(54px, 12vw, 230px);
-  letter-spacing: .005em;
-  color: #fff;
-  mix-blend-mode: difference;   /* le mot prend l'inverse exact de la vidéo, en direct */
-  will-change: opacity, transform;
-}
-.matter-word .m-in { display: block; }
-.matter-word em { font-style: italic; font-weight: 300; margin-left: .2em; }
 
 .hero-shade {
   position: absolute; inset: 0; z-index: 7;
@@ -807,7 +780,7 @@ body.has-cursor .cursor { display: block; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 900px) {
-  #hero { height: 1250vh; }
+  #hero { height: 950vh; }
 
   .hero-frag-1 { top: 16vh; }
   .hero-frag-2 { bottom: 18vh; }

@@ -130,14 +130,9 @@
 
   const seqHero = new Seq('assets/seq-hero', 150, $('#cv-hero'));
   const seqWalk = new Seq('assets/seq-walk', 150, $('#cv-walk'));
-  const seqPigment = new Seq('assets/seq-pigment', 110, $('#cv-pigment'));
-  const seqLumiere = new Seq('assets/seq-lumiere', 90, $('#cv-lumiere'));
-  const seqVelours = new Seq('assets/seq-velours', 90, $('#cv-velours'));
-  const matterSeqs = [seqPigment, seqLumiere, seqVelours];
-  [seqHero, seqWalk, ...matterSeqs].forEach((s) => s.resize());
+  [seqHero, seqWalk].forEach((s) => s.resize());
   gsap.ticker.add(() => {
     seqHero.tick(); seqWalk.tick();
-    seqPigment.tick(); seqLumiere.tick(); seqVelours.tick();
   });
 
   /* ---------- préloader ---------- */
@@ -179,8 +174,8 @@
       .add(() => {
         lenis.start();
         ScrollTrigger.refresh();
-        // séquences suivantes en tâche de fond, l'une après l'autre
-        seqWalk.load(() => seqPigment.load(() => seqLumiere.load(() => seqVelours.load())));
+        // séquence suivante en tâche de fond
+        seqWalk.load();
       }, '-=0.9');
   }
 
@@ -188,9 +183,9 @@
 
   /* ---------- scènes 1→4 · la grande timeline (une seule section, une seule paire de portes) ---------- */
   const T = {
-    heroEnd: 0.40,     // le travelling tourne jusqu'au fondu
-    walkStart: 0.40,   // la promenade s'éveille sous le fondu enchaîné
-    walkEnd: 0.68,     // fin du parcours des trois pièces
+    heroEnd: 0.526,    // le travelling tourne jusqu'au fondu
+    walkStart: 0.526,  // la promenade s'éveille sous le fondu enchaîné
+    walkEnd: 0.895,    // fin du parcours des trois pièces
   };
 
   // morph liquide « Entrez » → « dans la couleur »
@@ -208,7 +203,7 @@
   }
   setGooey(0);
 
-  const GOOEY_A = 0.62, GOOEY_B = 0.665;
+  const GOOEY_A = 0.816, GOOEY_B = 0.875;
 
   ScrollTrigger.create({
     trigger: '#hero',
@@ -219,13 +214,6 @@
       const p = self.progress;
       seqHero.target = clamp01(p / T.heroEnd);
       seqWalk.target = clamp01((p - T.walkStart) / (T.walkEnd - T.walkStart));
-      // chaque matière est scrubée sur sa propre fenêtre (le mot en inversion
-      // suit la vidéo image par image au scroll)
-      seqPigment.target = clamp01((p - 0.70) / (0.805 - 0.70));
-      // lumière + velours ralentis : on ne traverse qu'une portion des frames
-      // sur la même distance de scroll (fini l'effet « vidéo accélérée »)
-      seqLumiere.target = clamp01((p - 0.795) / (0.88 - 0.795)) * 0.5;
-      seqVelours.target = clamp01((p - 0.87) / (0.97 - 0.87)) * 0.5;
       // le morph du titre suit le scroll
       setGooey((p - GOOEY_A) / (GOOEY_B - GOOEY_A));
     },
@@ -249,46 +237,33 @@
     defaults: { ease: 'none' },
     scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom bottom', scrub: 0.6 },
   });
-  tl.fromTo('.hero-black', { opacity: 1 }, { opacity: 0, duration: 0.03 }, 0)   // le hall émerge du noir laissé par l'intro
-    .fromTo('.hero-frag-1', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.02 }, 0.028)
-    .to('.hero-frag-1', { opacity: 0, y: -50, duration: 0.02 }, 0.084)
-    .fromTo('.hero-frag-2', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.02 }, 0.128)
-    .to('.hero-frag-2', { opacity: 0, y: -50, duration: 0.02 }, 0.192)
+  tl.fromTo('.hero-black', { opacity: 1 }, { opacity: 0, duration: 0.04 }, 0)   // le hall émerge du noir laissé par l'intro
+    .fromTo('.hero-frag-1', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.026 }, 0.037)
+    .to('.hero-frag-1', { opacity: 0, y: -50, duration: 0.026 }, 0.111)
+    .fromTo('.hero-frag-2', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.026 }, 0.168)
+    .to('.hero-frag-2', { opacity: 0, y: -50, duration: 0.026 }, 0.253)
     // la lumière baisse, le message de bienvenue s'allume au cœur du travelling
-    .fromTo('.welcome-shade', { opacity: 0 }, { opacity: 1, duration: 0.03 }, 0.235)
-    .fromTo('.welcome-kicker', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.022 }, 0.248)
-    .fromTo('.welcome-title', { opacity: 0, y: 46, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.03 }, 0.258)
+    .fromTo('.welcome-shade', { opacity: 0 }, { opacity: 1, duration: 0.039 }, 0.309)
+    .fromTo('.welcome-kicker', { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.029 }, 0.326)
+    .fromTo('.welcome-title', { opacity: 0, y: 46, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.039 }, 0.339)
     // tenue du titre, puis fondu enchaîné doux vers la promenade
-    .to('.welcome-title', { opacity: 0, y: -34, scale: 1.03, duration: 0.026 }, 0.362)
-    .to('.welcome-kicker', { opacity: 0, y: -20, duration: 0.02 }, 0.362)
-    .to('.welcome-shade', { opacity: 0, duration: 0.032 }, 0.372)
-    .to('#cv-hero', { opacity: 0, duration: 0.05 }, 0.385)
-    .to('.hero-shade', { opacity: 0, duration: 0.05 }, 0.385)
+    .to('.welcome-title', { opacity: 0, y: -34, scale: 1.03, duration: 0.034 }, 0.476)
+    .to('.welcome-kicker', { opacity: 0, y: -20, duration: 0.026 }, 0.476)
+    .to('.welcome-shade', { opacity: 0, duration: 0.042 }, 0.489)
+    .to('#cv-hero', { opacity: 0, duration: 0.066 }, 0.507)
+    .to('.hero-shade', { opacity: 0, duration: 0.066 }, 0.507)
     // pièce 1 — le salon céladon (phrase en haut à gauche)
-    .fromTo('.m-line-1', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.016 }, 0.449)
-    .to('.m-line-1', { opacity: 0, y: -40, duration: 0.016 }, 0.489)
+    .fromTo('.m-line-1', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.021 }, 0.591)
+    .to('.m-line-1', { opacity: 0, y: -40, duration: 0.021 }, 0.643)
     // pièce 2 — la bibliothèque (phrase en bas à droite)
-    .fromTo('.m-line-2', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.016 }, 0.515)
-    .to('.m-line-2', { opacity: 0, y: -40, duration: 0.016 }, 0.573)
-    // pièce 3 — le séjour au couchant : « Entrez » se liquéfie en « dans la couleur »
+    .fromTo('.m-line-2', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.021 }, 0.678)
+    .to('.m-line-2', { opacity: 0, y: -40, duration: 0.021 }, 0.754)
+    // pièce 3 — le séjour au couchant : « Entrez » se liquéfie en « dans la couleur »,
+    // puis reste à l'écran jusqu'à la fin du travelling (fondu enchaîné direct vers Alma)
     // (le morph gooey est piloté par setGooey dans le ScrollTrigger ci-dessus)
-    .fromTo('.m-line-3', { opacity: 0 }, { opacity: 1, duration: 0.016 }, 0.585)
-    .to('#cv-walk', { opacity: 0, duration: 0.03 }, 0.70)
-    .to('.veil', { opacity: 0, duration: 0.03 }, 0.70)     // révèle la vidéo « pigment » dessous
-    .to('.m-line-3', { opacity: 0, duration: 0.018 }, 0.72)
-    // les matières : chaque mot prend l'inverse exact de SA vidéo (mix-blend difference)
-    // le pigment
-    .fromTo('.matter-word-1', { opacity: 0, yPercent: 8 }, { opacity: 1, yPercent: 0, duration: 0.016 }, 0.745)
-    .to('.matter-word-1', { opacity: 0, yPercent: -8, duration: 0.016 }, 0.80)
-    // la lumière (la vidéo se substitue en fondu sous le mot suivant)
-    .to('.matter-2', { opacity: 1, duration: 0.02 }, 0.795)
-    .fromTo('.matter-word-2', { opacity: 0, yPercent: 8 }, { opacity: 1, yPercent: 0, duration: 0.016 }, 0.82)
-    .to('.matter-word-2', { opacity: 0, yPercent: -8, duration: 0.016 }, 0.875)
-    // le velours
-    .to('.matter-3', { opacity: 1, duration: 0.02 }, 0.87)
-    .fromTo('.matter-word-3', { opacity: 0, yPercent: 8 }, { opacity: 1, yPercent: 0, duration: 0.016 }, 0.895)
-    .to('.matter-word-3', { opacity: 0, duration: 0.014 }, 0.965)
-    .to({}, { duration: 0.003 }, 0.997); // tenue jusqu'à la fin exacte
+    .fromTo('.m-line-3', { opacity: 0 }, { opacity: 1, duration: 0.021 }, 0.77)
+    .to('.m-line-3', { opacity: 0, duration: 0.03 }, 0.94)
+    .to({}, { duration: 0.02 }, 0.98); // tenue jusqu'à la fin exacte
 
   /* ---------- scène 5 · Alma (parallaxe + rideau) ---------- */
   gsap.fromTo('.alma-photo img', { yPercent: -22 }, {
@@ -583,7 +558,6 @@
     rsTimer = setTimeout(() => {
       seqHero.resize();
       seqWalk.resize();
-      matterSeqs.forEach((s) => s.resize());
       sizeMat();
       ScrollTrigger.refresh();
     }, 200);
