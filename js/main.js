@@ -34,8 +34,16 @@
   $$('[data-nav]').forEach((a) => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
-      const t = $(a.getAttribute('href'));
-      if (t) lenis.scrollTo(t === $('#hero') ? 0 : t, { duration: 2 });
+      const href = a.getAttribute('href');
+      if (href === '#hero' || href === '#intro') { lenis.scrollTo(0, { duration: 2 }); return; }
+      // le footer est en position:fixed → on file tout en bas pour le révéler
+      if (href === '#footer') {
+        const max = document.documentElement.scrollHeight - window.innerHeight;
+        lenis.scrollTo(max, { duration: 2.4 });
+        return;
+      }
+      const t = $(href);
+      if (t) lenis.scrollTo(t, { duration: 2 });
     });
   });
 
@@ -185,8 +193,6 @@
     walkEnd: 0.68,     // fin du parcours des trois pièces
   };
 
-  // boucle « vivante » au repos
-  const heroIdle = $('#hero-idle');
   // morph liquide « Entrez » → « dans la couleur »
   const gooey1 = $('.gooey-1');
   const gooey2 = $('.gooey-2');
@@ -216,25 +222,34 @@
       // chaque matière est scrubée sur sa propre fenêtre (le mot en inversion
       // suit la vidéo image par image au scroll)
       seqPigment.target = clamp01((p - 0.70) / (0.805 - 0.70));
-      seqLumiere.target = clamp01((p - 0.795) / (0.88 - 0.795));
-      seqVelours.target = clamp01((p - 0.87) / (0.97 - 0.87));
+      // lumière + velours ralentis : on ne traverse qu'une portion des frames
+      // sur la même distance de scroll (fini l'effet « vidéo accélérée »)
+      seqLumiere.target = clamp01((p - 0.795) / (0.88 - 0.795)) * 0.5;
+      seqVelours.target = clamp01((p - 0.87) / (0.97 - 0.87)) * 0.5;
       // le morph du titre suit le scroll
       setGooey((p - GOOEY_A) / (GOOEY_B - GOOEY_A));
-      // la boucle idle ne tourne qu'en haut (perf), puis se fige/masque
-      if (heroIdle) {
-        const idle = p < 0.05;
-        if (idle && heroIdle.paused) { const pr = heroIdle.play(); if (pr) pr.catch(() => {}); }
-        else if (!idle && !heroIdle.paused) heroIdle.pause();
-      }
     },
   });
+
+  // ---------- scène 0 bis · l'intro : descente + fondu au noir ----------
+  const introVideo = $('#intro-video');
+  gsap.timeline({
+    defaults: { ease: 'none' },
+    scrollTrigger: {
+      trigger: '#intro', start: 'top top', end: 'bottom bottom', scrub: 0.6,
+      onLeave: () => { if (introVideo) introVideo.pause(); },
+      onEnterBack: () => { if (introVideo) { const pr = introVideo.play(); if (pr) pr.catch(() => {}); } },
+    },
+  })
+    .to('.intro-cta', { opacity: 0, duration: 0.09 }, 0.03)
+    .fromTo('#intro-video', { yPercent: 0 }, { yPercent: 9, duration: 1 }, 0)
+    .fromTo('.intro-black', { opacity: 0 }, { opacity: 1, duration: 0.42 }, 0.48);
 
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom bottom', scrub: 0.6 },
   });
-  tl.fromTo('#hero-idle', { opacity: 1 }, { opacity: 0, duration: 0.02 }, 0)   // fondu quasi invisible vers le hall
-    .to('.hero-hint', { opacity: 0, duration: 0.012 }, 0.012)
+  tl.fromTo('.hero-black', { opacity: 1 }, { opacity: 0, duration: 0.03 }, 0)   // le hall émerge du noir laissé par l'intro
     .fromTo('.hero-frag-1', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.02 }, 0.028)
     .to('.hero-frag-1', { opacity: 0, y: -50, duration: 0.02 }, 0.084)
     .fromTo('.hero-frag-2', { opacity: 0, y: 50 }, { opacity: 1, y: 0, duration: 0.02 }, 0.128)
@@ -290,6 +305,41 @@
     yPercent: 0, ease: 'none',
     scrollTrigger: { trigger: '#studio', start: 'top bottom', end: 'bottom top', scrub: true },
   });
+
+  /* ---------- scène 6 bis · galerie : parallaxe souris (tilt) + respiration ---------- */
+  {
+    const galItems = $$('.gal-item').map((el) => ({
+      el, img: $('img', el),
+      depth: parseFloat(el.dataset.depth) || 0.12,
+      tx: 0, ty: 0, phase: Math.random() * Math.PI * 2,
+    }));
+    if (galItems.length) {
+      let gmx = innerWidth / 2, gmy = innerHeight / 2;
+      if (!isTouch && !reduced) {
+        window.addEventListener('mousemove', (e) => { gmx = e.clientX; gmy = e.clientY; });
+      }
+      gsap.ticker.add(() => {
+        const t = performance.now() / 1000;
+        for (const g of galItems) {
+          const r = g.el.getBoundingClientRect();
+          if (r.bottom < -240 || r.top > innerHeight + 240) continue;
+          let targetX = 0, targetY = 0;
+          if (!isTouch && !reduced) {
+            const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+            let nx = (gmx - cx) / (r.width / 2), ny = (gmy - cy) / (r.height / 2);
+            nx = Math.max(-1.3, Math.min(1.3, nx)); ny = Math.max(-1.3, Math.min(1.3, ny));
+            targetX = nx * g.depth * 46;   // % (gros effet, dans la marge de 12 %)
+            targetY = ny * g.depth * 34;
+          }
+          g.tx += (targetX - g.tx) * 0.07;
+          g.ty += (targetY - g.ty) * 0.07;
+          const breatheY = reduced ? 0 : Math.sin(t * 0.5 + g.phase) * 1.1;
+          const breatheS = 1.04 + (reduced ? 0 : Math.sin(t * 0.5 + g.phase) * 0.03);
+          g.img.style.transform = `translate3d(${g.tx}%, ${g.ty + breatheY}%, 0) scale(${breatheS})`;
+        }
+      });
+    }
+  }
 
   /* ---------- révélations éditoriales (inspirées de 21st.dev) ---------- */
   if (!reduced) {

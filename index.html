@@ -51,8 +51,22 @@
 
   <main id="site">
 
-    <!-- Scènes 1→4 · Une seule section sticky : travelling, portes,
-         manifeste sur la promenade, seconde pièce. Une seule paire de portes. -->
+    <!-- Scène 0 bis · L'intro : une pièce lumineuse qui vit (voilages),
+         zoomée, qui descend au scroll en fondu vers le noir, puis débouche
+         doucement sur le travelling du hall. -->
+    <section id="intro" class="pin">
+      <div class="pin-child">
+        <video id="intro-video" muted loop playsinline autoplay preload="auto" aria-hidden="true">
+          <source src="assets/video/hero-intro.mp4" type="video/mp4"></video>
+        <div class="intro-black" aria-hidden="true"></div>
+        <div class="intro-cta">
+          <p class="intro-cta-title">Vivez <em>l'expérience</em></p>
+          <span class="intro-mouse" aria-hidden="true"><span class="intro-wheel"></span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scènes 1→4 · Une seule section sticky : travelling, manifeste, matières. -->
     <section id="hero" class="pin">
       <div class="pin-child">
         <div id="matter-stage" aria-hidden="true">
@@ -80,12 +94,10 @@
           </div>
         </div>
         <canvas id="cv-hero"></canvas>
-        <video id="hero-idle" muted loop playsinline autoplay preload="auto" aria-hidden="true">
-          <source src="assets/video/hero-idle.mp4" type="video/mp4"></video>
         <div class="hero-shade" aria-hidden="true"></div>
+        <div class="hero-black" aria-hidden="true"></div>
         <p class="hero-frag hero-frag-1">Certaines portes<br><em>ne s'ouvrent pas.</em></p>
         <p class="hero-frag hero-frag-2">Elles vous<br><em>reconnaissent.</em></p>
-        <p class="hero-hint">( faites défiler )</p>
         <div class="welcome-shade" aria-hidden="true"></div>
         <div class="welcome">
           <p class="welcome-kicker">Bienvenue</p>
@@ -127,6 +139,19 @@
           <span class="idx">05</span><span class="t">Maison Opale</span><span class="loc">Genève — en cours</span></a></li>
       </ul>
       <div class="preview" aria-hidden="true"><div class="preview-inner"><img src="" alt=""></div></div>
+    </section>
+
+    <!-- Scène 6 bis · La galerie — intérieurs, parallaxe à la souris -->
+    <section id="galerie">
+      <p class="sec-label">La couleur, pièce à pièce</p>
+      <div class="gal-col">
+        <figure class="gal-item gal-portrait" data-depth="0.10"><div class="gal-frame"><img src="assets/img/gal-1.jpg" alt="Séjour à plafond peint, Beyrouth" draggable="false"></div><figcaption>Plafond peint — un salon suspendu</figcaption></figure>
+        <figure class="gal-item gal-land" data-depth="0.16"><div class="gal-frame"><img src="assets/img/gal-2.jpg" alt="Salon fuchsia à fresque forestière" draggable="false"></div><figcaption>Fuchsia &amp; forêt tissée</figcaption></figure>
+        <figure class="gal-item gal-portrait" data-depth="0.13"><div class="gal-frame"><img src="assets/img/gal-3.jpg" alt="Chesterfield émeraude sur mur carmin" draggable="false"></div><figcaption>Velours émeraude, mur carmin</figcaption></figure>
+        <figure class="gal-item gal-land" data-depth="0.18"><div class="gal-frame"><img src="assets/img/gal-4.jpg" alt="Bar à fresque tropicale, fauteuils rose vif" draggable="false"></div><figcaption>Fresque tropicale, velours rose</figcaption></figure>
+        <figure class="gal-item gal-portrait" data-depth="0.11"><div class="gal-frame"><img src="assets/img/gal-6.jpg" alt="Pièce magenta à soupente, ottoman safran" draggable="false"></div><figcaption>Magenta, turquoise, safran</figcaption></figure>
+        <figure class="gal-item gal-land" data-depth="0.15"><div class="gal-frame"><img src="assets/img/gal-5.jpg" alt="Loft à cheminée de brique, canapé orange" draggable="false"></div><figcaption>Brique &amp; feu — un loft</figcaption></figure>
+      </div>
     </section>
 
     <!-- Scène 7 · La galerie des matières -->
